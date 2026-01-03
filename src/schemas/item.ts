@@ -19,7 +19,7 @@ export const itemParamsSchema = z.object({
     .transform((val) => parseInt(val, 10))
     .refine(
       (n) => n > 0 && n <= Number.MAX_SAFE_INTEGER,
-      { message: `ID must be a positive integer <= ${Number.MAX_SAFE_INTEGER}` }
+      { error: `ID must be a positive integer <= ${Number.MAX_SAFE_INTEGER}` }
     ),
 });
 
@@ -28,5 +28,5 @@ export const updateItemSchema = z.strictObject({
   completed: z.boolean().optional()
 }).refine(
   (data) => data.description !== undefined || data.completed !== undefined,
-  { message: "Provide at least one of: description, completed" }
+  { error: "Provide at least one of: description, completed" }
 );
