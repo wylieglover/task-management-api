@@ -25,9 +25,9 @@ export const validate = ({
         res.locals.query = query.parse(req.query);
       }
 
-      next();
+      return next();
     } catch (err: unknown) {
-        next(err);
+      return next(err);
     }
   };
 };

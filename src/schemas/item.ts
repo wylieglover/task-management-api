@@ -1,24 +1,32 @@
 import { z } from 'zod'
 
-
-// Zod throws an error message for an exact field, look it up later
 export const createItemSchema = z.strictObject({
-  description: z.string()
+  description: z.string().trim().min(1)
 });
 
 export const getItemsSchema = z.strictObject({
-  completed: z.string()
-    .transform(val => val.toLowerCase() === "true")
-    .optional()
+  completed: z.preprocess(
+    (v) => {
+      if (typeof v === "string") return v.trim().toLowerCase()
+      return v;
+    },
+    z.enum(["true", "false"]).transform((v) => v === "true")
+  ).optional()
 });
 
 export const itemParamsSchema = z.object({
-  id: z.string()
-    .transform(val => parseInt(val, 10))
-    .refine(val => !isNaN(val), { message: "ID must be a number" })
+  id: z.string().trim().regex(/^\d+$/)
+    .transform((val) => parseInt(val, 10))
+    .refine(
+      (n) => n > 0 && n <= Number.MAX_SAFE_INTEGER,
+      { message: `ID must be a positive integer <= ${Number.MAX_SAFE_INTEGER}` }
+    ),
 });
 
 export const updateItemSchema = z.strictObject({  
-  description: z.string().optional(),
+  description: z.string().trim().min(1).optional(),
   completed: z.boolean().optional()
-});
+}).refine(
+  (data) => data.description !== undefined || data.completed !== undefined,
+  { message: "Provide at least one of: description, completed" }
+);

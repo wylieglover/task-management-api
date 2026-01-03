@@ -1,3 +1,4 @@
+import { env } from '../config/env.js';
 import type { ErrorRequestHandler } from "express";
 import { HttpError } from "../errors/httpErrors.js";
 import { Prisma } from "../generated/prisma/client.js";
@@ -8,15 +9,14 @@ export const errorHandler: ErrorRequestHandler = async (err, req, res, next) => 
         return res.status(err.status).json({ message: err.message });
     }
 
-    // @TODO Why do I even check for prisma errors in my serialization (errorHandler)
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
         switch (err.code) {
             case "P2025":
                 return res.status(404).json({ message: "Record not found" });
             case "P2002":
-                return res.status(404).json({ message: "Record in use already" });
+                return res.status(409).json({ message: "Record already exists" });
             default:
-                return res.status(400).json({ message: "Database error" });
+                return res.status(500).json({ message: "Database error" });
         }
     }
 
@@ -35,7 +35,7 @@ export const errorHandler: ErrorRequestHandler = async (err, req, res, next) => 
         });
     }
 
-    if (process.env.NODE_ENV !== "production") {
+    if (env.NODE_ENV !== "production") {
         console.error("Middleware: ", err);
     }
 

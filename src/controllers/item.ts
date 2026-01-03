@@ -3,8 +3,8 @@ import { notFound } from "../errors/httpErrors.js"
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const createItem = asyncHandler(async(_req, res, _next) => {
-  const { description } = res.locals.body as { description: string };
-  const userId = res.locals.userId as number;
+  const { description } = res.locals.body;
+  const userId = res.locals.userId;
 
   const item = await prisma.item.create({
     data: {
@@ -16,10 +16,9 @@ export const createItem = asyncHandler(async(_req, res, _next) => {
   return res.status(201).json({ item });
 });
 
-// @TODO: What is ? 
 export const getItems = asyncHandler(async(_req, res, _next) => {
-  const { completed } = (res.locals.query ?? {}) as { completed?: boolean };
-  const userId = res.locals.userId as number;
+  const { completed } = (res.locals.query ?? {});
+  const userId = res.locals.userId;
 
   const items = await prisma.item.findMany({
     where: {
@@ -34,8 +33,8 @@ export const getItems = asyncHandler(async(_req, res, _next) => {
 });
 
 export const getItemById = asyncHandler(async(_req, res, _next) => {
-  const { id } = res.locals.params as { id: number };
-  const userId = res.locals.userId as number;
+  const { id } = res.locals.params;
+  const userId = res.locals.userId;
 
   const item = await prisma.item.findFirst({
     where: {
@@ -52,8 +51,8 @@ export const getItemById = asyncHandler(async(_req, res, _next) => {
 });
 
 export const updateItembyId = asyncHandler(async(_req, res, _next) => {
-  const { id } = res.locals.params as { id: number };
-  const userId = res.locals.userId as number;
+  const { id } = res.locals.params;
+  const userId = res.locals.userId;
   const { description, completed } = res.locals.body;
 
   const existing = await prisma.item.findFirst({
@@ -80,8 +79,8 @@ export const updateItembyId = asyncHandler(async(_req, res, _next) => {
 });
 
 export const deleteItembyId = asyncHandler(async(_req, res, _next) => {
-  const { id } = res.locals.params as { id: number };
-  const userId = res.locals.userId as number;
+  const { id } = res.locals.params;
+  const userId = res.locals.userId;
 
   const existing = await prisma.item.findFirst({
     where: { id, userId },

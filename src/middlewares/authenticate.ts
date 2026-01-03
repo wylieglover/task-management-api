@@ -1,10 +1,7 @@
 
 import { RequestHandler } from "express"
 import jwt from "jsonwebtoken";
-
-
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) throw new Error("Missing JWT_SECRET env var");
+import { env } from '../config/env.js'; 
 
 export const authenticate: RequestHandler = (req, res, next) => {
   const auth = req.headers.authorization;
@@ -16,7 +13,7 @@ export const authenticate: RequestHandler = (req, res, next) => {
   const token = auth.slice("Bearer ".length);
   
   try { 
-    const payload = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    const payload = jwt.verify(token, env.JWT_SECRET) as jwt.JwtPayload;
 
     const userId = Number(payload.sub);
     if (!Number.isInteger(userId) || userId <= 0) {
@@ -24,6 +21,7 @@ export const authenticate: RequestHandler = (req, res, next) => {
     }
     
     res.locals.userId = userId;
+    
     return next();
   } catch (err: unknown) {
     return res.status(401).json({ message: "Invalid or expired token" });
