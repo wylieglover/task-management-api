@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma.js"
 import { notFound } from "../errors/httpErrors.js"
-import { asyncHandler } from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js"
 
 export const createItem = asyncHandler(async(_req, res, _next) => {
   const { description } = res.locals.body;

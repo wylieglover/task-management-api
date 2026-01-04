@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 const emailSchema = z.string().trim().toLowerCase().pipe(z.email());
 
@@ -27,4 +27,10 @@ export const loginSchema = z.strictObject({
     .refine((val) => val === val.trim(), {
       error: "Password cannot start or end with spaces",
     }),
+});
+
+export const refreshTokenSchema = z.strictObject({
+  refreshToken: z.string()
+      .min(20, "Invalid refresh token format")
+      .trim()
 });

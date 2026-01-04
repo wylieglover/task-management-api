@@ -1,15 +1,15 @@
-import express from 'express';
+import express from 'express'
 import { 
     createItem,
     getItems,
     getItemById,
     updateItembyId,
     deleteItembyId
-} from '../controllers/item.js';
-import { validate } from '../middlewares/validate.js';
-import { authenticate } from '../middlewares/authenticate.js';
+} from '../controllers/item.js'
+import { validate } from '../middlewares/validate.js'
+import { authenticate } from '../middlewares/authenticate.js'
 
-import { createItemSchema, getItemsSchema, updateItemSchema, itemParamsSchema } from '../schemas/item.js';
+import { createItemSchema, getItemsSchema, updateItemSchema, itemParamsSchema } from '../schemas/item.js'
 
 const itemRouter = express.Router();
 

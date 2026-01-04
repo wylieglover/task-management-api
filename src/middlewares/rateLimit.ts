@@ -1,4 +1,4 @@
-import { rateLimit } from "express-rate-limit";
+import { rateLimit } from "express-rate-limit"
 
 export const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -13,6 +13,7 @@ export const loginLimiter = rateLimit({
     skipSuccessfulRequests: true,
     standardHeaders: "draft-8",
     legacyHeaders: false,
+    message: "Too many login attempts, please try again later"
 });
 
 export const registerLimiter = rateLimit({
@@ -20,4 +21,13 @@ export const registerLimiter = rateLimit({
     limit: 5,
     standardHeaders: "draft-8",
     legacyHeaders: false,
+    message: "Too many register attempts, please try again later"
+});
+
+export const refreshLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,  
+    limit: 20,             
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: "Too many refresh attempts, please try again later"
 });
