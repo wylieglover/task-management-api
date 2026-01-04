@@ -1,8 +1,8 @@
-import { env } from '../config/env.js'
+import { env } from "../config/env.js"
 import type { ErrorRequestHandler } from "express"
 import { HttpError } from "../errors/httpErrors.js"
 import { Prisma } from "../generated/prisma/client.js"
-import { z } from 'zod'
+import { z } from "zod"
 
 export const errorHandler: ErrorRequestHandler = async (err, req, res, next) => {
     if (err instanceof HttpError) {

@@ -14,7 +14,7 @@ const validateEnv = (): {
     }
 
     if (REDIS_PORT && isNaN(Number(REDIS_PORT))) {
-        console.warn(`Invalid REDIS_PORT '${REDIS_PORT}', using default 6379`);
+        console.warn(`Invalid REDIS_PORT "${REDIS_PORT}", using default 6379`);
     }
 
     const JWT_ACCESS_EXPIRY = NODE_ENV === "development"

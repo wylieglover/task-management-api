@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 export const createItemSchema = z.strictObject({
   description: z.string().trim().min(1)
